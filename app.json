@@ -4,10 +4,12 @@
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "name": {
-    "en": "Verisure"
+    "en": "Verisure",
+    "sv": "Verisure"    
   },
   "description": {
-    "en": "add support for verisure alarm"
+    "en": "add support for verisure alarm",
+    "sv": "Lägg till stöd för Verisure larm"
   },
   "category": [
     "security"
@@ -26,7 +28,8 @@
       "id": "smartlock",
       "name": {
         "en": "SmartLock",
-        "nl": "SmartLock"
+        "nl": "SmartLock",
+        "sv": "SmartLock"
       },
       "images": {
         "large": "./drivers/smartlock/assets/large.png",
@@ -57,7 +60,8 @@
       "id": "smokedetector",
       "name": {
         "en": "Smokedetector",
-        "nl": "Rookmelder"
+        "nl": "Rookmelder",
+        "sv": "Rökdetektor"
       },
       "images": {
         "large": "./drivers/smokedetector/assets/large.png",
@@ -120,7 +124,8 @@
       "id": "door_window",
       "name": {
         "en": "Contactsensor",
-        "nl": "Contactsensor"
+        "nl": "Contactsensor",
+        "sv": "Dörr/fönstersensor"
       },
       "images": {
         "large": "./drivers/door_window/assets/large.png",
@@ -151,7 +156,8 @@
       "id": "verisure_alarm",
       "name": {
         "en": "Alarm Driver",
-        "nl": "Alarm Driver"
+        "nl": "Alarm Driver",
+        "sv": "Huvudenhet"
       },
       "class": "homealarm",
       "images": {
@@ -165,7 +171,8 @@
         "homealarm_state": {
           "title": {
             "en": "Alarm State",
-            "nl": "Alarm status"
+            "nl": "Alarm status",
+            "sv": "Larmstatus"
           }
         }
       },

@@ -1,0 +1,13 @@
+{
+	"login-title": "Logga in på Verisure",
+	"login": "Logga in",
+	"logout": "Logga ut",
+	"username": "E-postadress",
+	"password": "Lösenord",
+	"save": "Spara",
+	"keycode_form": "Ange din personliga PIN-kod:",
+	"settings_saved": "Inställningarna sparade!",
+	"invalid_credentials": "Ogiltlig e-postadress eller lösenord",
+	"donate-title": "Donera",
+	"donate-text": "Om du gillar appen kan du alltid donera, så jag kan fortsätta göra förbättringar av den :)"
+}

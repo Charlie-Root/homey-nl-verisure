@@ -46,7 +46,7 @@ class Alarm extends Homey.Device {
         else {
             console.log(' unknown status: ' + state);
         }
-        
+        this.log('new slarm state: ' + v);
         this.setCapabilityValue('homealarm_state', v);
          
         Promise.resolve();
@@ -57,7 +57,8 @@ class Alarm extends Homey.Device {
 
         let api = new Verisure();
         var s = api.getArmState();
-		this.onAlarmUpdate(s);
+        this.onAlarmUpdate(s);
+        Promise.resolve();
     }
     // this method is called when the Device is added
     onAdded() {
@@ -81,6 +82,7 @@ class Alarm extends Homey.Device {
         if(Homey.ManagerSettings.get('keycode')) {
             let api = new Verisure();
             api.setArmState(value);
+            console.log('Set alarm to : ' + value);
             callback(null, value);
         }
         else {

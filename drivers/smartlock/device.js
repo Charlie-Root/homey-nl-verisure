@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const Verisure = require('../../lib/Api.js');
+const api = require('../../lib/Api.js');
 
 class SmartLock extends Homey.Device {
 
@@ -50,7 +50,6 @@ class SmartLock extends Homey.Device {
         console.log("trigger smartlock: " + value);
 
         if(Homey.ManagerSettings.get('keycode')) {
-            let api = new Verisure();
             var d = this.getData();
             api.setLockState(d["deviceLabel"], value);
         }
@@ -66,7 +65,6 @@ class SmartLock extends Homey.Device {
            	this.log('[#63] Polling SmartLock...');	
             var d = this.getName();
             
-            let api = new Verisure();
             api.getSmartLock();
 
             

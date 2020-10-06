@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const Verisure = require('../../lib/Api.js');
+const api = require('../../lib/Api.js');
 
 
 const deviceMap = new Map();
@@ -11,14 +11,12 @@ class Smokedetector extends Homey.Driver {
 
     _initDevice() {
         this.log('_initDevice');
-        let api = new Verisure();
         api.getOverview();
        
     }
 
     onPairListDevices( data, callback ) {
 
-        let api = new Verisure();
         api.getClimateStatus();
         
         var d = Homey.ManagerSettings.get('climateStatus');

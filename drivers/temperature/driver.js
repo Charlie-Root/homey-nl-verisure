@@ -16,8 +16,6 @@ class Temperature extends Homey.Driver {
 
     onPairListDevices( data, callback ) {
 
-        let api = new Verisure();
-        
         api.getClimateStatus()
         
         var d = Homey.ManagerSettings.get('climateStatus');

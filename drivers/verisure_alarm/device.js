@@ -3,7 +3,7 @@
 const Homey = require('homey');
 var request = require('request');
 var xml2js = require('xml2js');
-const Verisure = require('../../lib/Api.js');
+const api = require('../../lib/Api.js');
 
 class Alarm extends Homey.Device {
 
@@ -13,7 +13,6 @@ class Alarm extends Homey.Device {
         const POLL_INTERVAL = 30000; // 30 seconds
 
         
-        let api = new Verisure();
         api.getInstallations();
        
         this.registerCapabilityListener('homealarm_state', this.onCapabilityOnoff.bind(this))
@@ -55,7 +54,6 @@ class Alarm extends Homey.Device {
     }
     pollAlarmStatus() {
 
-        let api = new Verisure();
         var s = api.getArmState();
         this.onAlarmUpdate(s);
         Promise.resolve();
@@ -80,7 +78,6 @@ class Alarm extends Homey.Device {
         
 
         if(Homey.ManagerSettings.get('keycode')) {
-            let api = new Verisure();
             api.setArmState(value);
             console.log('Set alarm to : ' + value);
             callback(null, value);

@@ -8,7 +8,7 @@ var session = require('client-sessions');
 var request = require('request');
 var xml2js = require('xml2js');
 
-const Verisure = require('./lib/Api.js');
+const api = require('./lib/Api.js');
 
 
 
@@ -19,9 +19,8 @@ class VerisureApp extends Homey.App {
 
 		
 
-		let api = new Verisure();
 		this.log('[#46] VerisureApp is running...');
-		
+		api.init();
 
 	}
 
@@ -39,8 +38,6 @@ class VerisureApp extends Homey.App {
 		if(Homey.ManagerSettings.get('username')) {
 			
 			this.log('username found. loading api');
-			
-			let api = new Verisure();
 			
 			api.getToken();
 			

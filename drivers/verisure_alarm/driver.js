@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const Verisure = require('../../lib/Api.js');
+const api = require('../../lib/Api.js');
 
 class AlarmDriver extends Homey.Driver {
 
@@ -10,7 +10,6 @@ class AlarmDriver extends Homey.Driver {
     onPairListDevices( data, callback ) {
 
         
-        let api = new Verisure();
         api.getInstallations();
         
 

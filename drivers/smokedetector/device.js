@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const Verisure = require('../../lib/Api.js');
+const api = require('../../lib/Api.js');
 
 class Smokedetector extends Homey.Device {
 
@@ -70,7 +70,6 @@ class Smokedetector extends Homey.Device {
            	
             var d = this.getName();
             
-            let api = new Verisure();
             api.getClimateStatus();
 
             

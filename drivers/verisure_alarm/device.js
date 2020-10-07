@@ -10,15 +10,15 @@ class Alarm extends Homey.Device {
     // this method is called when the Device is inited
     onInit() {
         
-        const POLL_INTERVAL = 30000; // 30 seconds
+        const POLL_INTERVAL = 5000; // 5 seconds
 
         
-        api.getInstallations();
+        //api.getInstallations();
        
         this.registerCapabilityListener('homealarm_state', this.onCapabilityOnoff.bind(this))
 
         // set poll interval
-        this._pollAlarmInterval = setInterval(this.pollAlarmStatus.bind(this), POLL_INTERVAL);
+        setInterval(this.pollAlarmStatus.bind(this), POLL_INTERVAL);
 
         
     }
@@ -46,17 +46,12 @@ class Alarm extends Homey.Device {
             console.log(' unknown status: ' + state);
         }
         this.log('new slarm state: ' + v);
-        this.setCapabilityValue('homealarm_state', v);
-         
-        Promise.resolve();
-        //callback(null, state);
-
+        this.setCapabilityValue('homealarm_state', v).catch(this.logger);         
     }
     pollAlarmStatus() {
 
         var s = api.getArmState();
         this.onAlarmUpdate(s);
-        Promise.resolve();
     }
     // this method is called when the Device is added
     onAdded() {

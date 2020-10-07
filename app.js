@@ -21,6 +21,7 @@ class VerisureApp extends Homey.App {
 
 		this.log('[#46] VerisureApp is running...');
 		api.init();
+		setInterval(api.getOverview, 60000);
 
 	}
 

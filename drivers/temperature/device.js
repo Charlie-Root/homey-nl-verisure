@@ -5,87 +5,70 @@ const api = require('../../lib/Api.js');
 
 class Temperature extends Homey.Device {
 
-    logger ( data ) {
-		
-		console.log( data );
+	logger(data) {
+
+		console.log(data);
 	}
-	
-    // this method is called when the Device is inited
-    onInit() {
-       
-        const POLL_INTERVAL = 30000; // 30 seconds
 
-        // first run
-        this.pollClimateStatus();
+	// this method is called when the Device is inited
+	onInit() {
 
-        this._pollClimateInterval = setInterval(this.pollClimateStatus.bind(this), POLL_INTERVAL);
-        
+		const POLL_INTERVAL = 30000; // 30 seconds
 
-    }
-    onTempChange(value) {
-        
-        //this.log('onTempChange ');
-        
-        if(value) {
-            this.setCapabilityValue('measure_temperature', value);
-        }
+		// first run
+		this.pollClimateStatus();
 
-    }
+		this.interval = setInterval(this.pollClimateStatus.bind(this), POLL_INTERVAL);
 
-    
 
-    // this method is called when the Device is added
-    onAdded() {
-        this.log('device added');
-    }
+	}
+	onTempChange(value) {
 
-    // this method is called when the Device is deleted
-    onDeleted() {
-        this.log('device deleted');
-    }
+		//this.log('onTempChange ');
 
-    // this method is called when the Device has requested a state change (turned on or off)
-    onCapabilityOnoff( value, opts, callback ) {
+		if (value) {
+			this.setCapabilityValue('measure_temperature', value).catch(this.logger);
+		}
 
-        // ... set value to real device
+	}
 
-        // Then, emit a callback ( err, result )
-        callback( null );
 
-        // or, return a Promise
-        return Promise.reject( new Error('Switching the device failed!') );
-    }
-    pollClimateStatus() {
 
-		if (Homey.ManagerSettings.get('username') != null) {      
-            
-            var d = this.getName();
-            
-            api.getClimateStatus();
+	// this method is called when the Device is added
+	onAdded() {
+		this.log('device added');
+	}
 
-            
-            var data = Homey.ManagerSettings.get('climateStatus');
-            if(data) {
-                var res = data["latestClimateSample"];
-                var bla = this;
-                if(res != null) {
-                    res.forEach(function(entry) {
-                    
-                    
-                        if(entry["deviceArea"][0] && entry["deviceArea"][0] === d) {
-                        
-                        
-                        bla.onTempChange(parseInt(entry["temperature"][0]));
-                        
-                        }
-                    }); 
-                }
-            }
-			return Promise.resolve();
-			
+	// this method is called when the Device is deleted
+	onDeleted() {
+		this.log('device deleted');
+		clearInterval(this.interval);
+	}
+
+	pollClimateStatus() {
+
+		if (Homey.ManagerSettings.get('username') != null) {
+
+			var d = this.getName();
+
+			api.getClimateStatus();
+
+
+			var data = Homey.ManagerSettings.get('climateStatus');
+			if (data) {
+				var res = data["latestClimateSample"];
+				var bla = this;
+				if (res != null) {
+					res.forEach(function(entry) {
+						if (entry["deviceArea"][0] && entry["deviceArea"][0] === d) {
+							bla.onTempChange(parseInt(entry["temperature"][0]));
+						}
+					});
+				}
+			}
 		}
 	}
-	
+
 }
 
 module.exports = Temperature;

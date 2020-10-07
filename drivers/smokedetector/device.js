@@ -16,17 +16,17 @@ class Smokedetector extends Homey.Device {
         const POLL_INTERVAL = 30000; // 30 seconds
       
         // first run
-        this.pollClimateStatus();
+        //this.pollClimateStatus();
 
        // //this.registerCapabilityListener('measure_temperature', this.onTempChange.bind(this));
-        this._pollClimateInterval = setInterval(this.pollClimateStatus.bind(this), POLL_INTERVAL);
+        this.interval = setInterval(this.pollClimateStatus.bind(this), POLL_INTERVAL);
         
 
     }
     onTempChange(value) {
                
         if(value) {
-            this.setCapabilityValue('measure_temperature', value);
+            this.setCapabilityValue('measure_temperature', value).catch(this.logger);
         }
 
     }
@@ -36,7 +36,7 @@ class Smokedetector extends Homey.Device {
         
         
         if(value) {
-            this.setCapabilityValue('measure_humidity', value);
+            this.setCapabilityValue('measure_humidity', value).catch(this.logger);
         }
         
 
@@ -50,6 +50,7 @@ class Smokedetector extends Homey.Device {
     // this method is called when the Device is deleted
     onDeleted() {
         this.log('device deleted');
+		clearInterval(this.interval);
     }
 
     // this method is called when the Device has requested a state change (turned on or off)
@@ -70,10 +71,7 @@ class Smokedetector extends Homey.Device {
            	
             var d = this.getName();
             
-            api.getClimateStatus();
-
-            
-            var data = Homey.ManagerSettings.get('climateStatus');
+            var data = api.getClimateStatus();
             if(data) {
 
                 var res = data["latestClimateSample"];
@@ -85,12 +83,12 @@ class Smokedetector extends Homey.Device {
                         
                         
                         if(entry["deviceArea"][0] && entry["deviceArea"][0] === d) {
-                    
-                            
-                            if(entry["temperature"][0]) {
+                            if(entry["temperature"] && entry["temperature"][0]) {
+                    			//bla.log("climate state " + entry["deviceArea"][0] + " " + entry["temperature"][0]);
                                 bla.onTempChange(parseInt(entry["temperature"][0]));
                             }
-                            if(entry["humidity"][0]) {
+                            if(entry["humidity"] && entry["humidity"][0]) {
+								//bla.log("humidity state " + entry["deviceArea"][0] + " " + entry["humidity"][0]);
                                 bla.onHumidityChange(parseInt(entry["humidity"][0]));
                             }
                         }

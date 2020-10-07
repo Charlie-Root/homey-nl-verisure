@@ -11,8 +11,6 @@ class Smokedetector extends Homey.Driver {
 
     _initDevice() {
         this.log('_initDevice');
-        api.getOverview();
-       
     }
 
     onPairListDevices( data, callback ) {

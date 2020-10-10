@@ -41,9 +41,6 @@
       ],
       "pair": [
         {
-          "id": "start"
-        },
-        {
           "id": "list_devices",
           "template": "list_devices",
           "navigation": {
@@ -74,9 +71,6 @@
       ],
       "pair": [
         {
-          "id": "start"
-        },
-        {
           "id": "list_devices",
           "template": "list_devices",
           "navigation": {
@@ -104,9 +98,6 @@
         "measure_temperature"
       ],
       "pair": [
-        {
-          "id": "start"
-        },
         {
           "id": "list_devices",
           "template": "list_devices",
@@ -136,9 +127,6 @@
         "alarm_contact"
       ],
       "pair": [
-        {
-          "id": "start"
-        },
         {
           "id": "list_devices",
           "template": "list_devices",

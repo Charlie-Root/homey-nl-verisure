@@ -1,100 +1,72 @@
 'use strict';
 
 const Homey = require('homey');
-const Verisure = require('../../lib/Api.js');
+const api = require('../../lib/Api.js');
 
 class DoorWindow extends Homey.Device {
 
-    logger ( data ) {
-		
-		console.log( data );
+	logger(data) {
+
+		console.log(data);
 	}
-	
-    // this method is called when the Device is inited
-    onInit() {
-       
-        const POLL_INTERVAL = 30000; // 30 seconds 
 
-        // first run
-        this.pollSensorStatus();
-         // register a capability listener
-        this.registerCapabilityListener('onoff', this.onCapabilityOnoff.bind(this));
+	// this method is called when the Device is inited
+	onInit() {
 
-        this._pollSensorInterval = setInterval(this.pollSensorStatus.bind(this), POLL_INTERVAL);
-        
+		const POLL_INTERVAL = 5000; // 5 seconds 
 
-    }
-    onSensorChange(value) {
-        
-        if(value) {
-           this.setCapabilityValue('alarm_contact', value);
-           // this.log('onSensorChange Window:' +value);
-        } 
-        
-    }
+		// register a capability listener
+		//this.registerCapabilityListener('onoff', this.onCapabilityOnoff.bind(this));
 
-    // this method is called when the Device is added
-    onAdded() {
-        this.log('device added');
-    }
+		this.interval = setInterval(this.pollSensorStatus.bind(this), POLL_INTERVAL);
 
-    // this method is called when the Device is deleted
-    onDeleted() {
-        this.log('device deleted');
-    }
 
-    // this method is called when the Device has requested a state change (turned on or off)
-    onCapabilityOnoff( value, opts, callback ) {
+	}
+	onSensorChange(hasContact) {
 
-        // ... set value to real device
+		if (hasContact != null) {
+			this.setCapabilityValue('alarm_contact', hasContact).catch(this.logger);
+		}
 
-        // Then, emit a callback ( err, result )
-        callback( null );
+	}
 
-        // or, return a Promise
-        return Promise.reject( new Error('Switching the device failed!') );
-    }
-    pollSensorStatus() {
+	// this method is called when the Device is added
+	onAdded() {
+		this.log('device added');
+	}
 
-		if (Homey.ManagerSettings.get('username') != null) {      
-            
-           
-            var d = this.getName();
-            
-            let api = new Verisure();
-            api.getDoorWindow();
+	// this method is called when the Device is deleted
+	onDeleted() {
+		this.log('device deleted');
+		clearInterval(this.interval);
+	}
 
-            
-            var data = Homey.ManagerSettings.get('doorWindow');
-            
-            var bla = this;
-            
-			if(data != null) {
-                data.forEach(function(entry) {
-                
-                
-                    if(entry["area"][0] && entry["area"][0] === d) {
-                        
-                       
-                       
-                        if(entry["state"][0] === "OPEN") {
-                            var v = new Boolean(true);
-                        }
-                        else {
-                            var v = new Boolean(false);
-                        }
-                        
-                        bla.onSensorChange(v);
-                        
-                    }
-                }); 
-            }
-           
-			return Promise.resolve();
-			
+	pollSensorStatus() {
+		if (Homey.ManagerSettings.get('username') != null) {
+
+
+			var d = this.getName();
+
+			var data = api.getDoorWindow();
+
+			var bla = this;
+
+			if (data != null) {
+				data.forEach(function(entry) {
+
+
+					if (entry["area"][0] && entry["area"][0] === d) {
+						//bla.log(" match: " + entry["area"][0] + " " + entry["state"][0]);
+
+						bla.onSensorChange(entry["state"][0] === "OPEN");
+
+					}
+				});
+			}
+
 		}
 	}
-	
+
 }
 
 module.exports = DoorWindow;

@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const Verisure = require('../../lib/Api.js');
+const api = require('../../lib/Api.js');
 
 
 const deviceMap = new Map();
@@ -17,7 +17,6 @@ class SmartLock extends Homey.Driver {
     onPairListDevices( data, callback ) {
         console.log("Discover smartlock");
         
-        let api = new Verisure();
         api.getSmartLock();
       
         var d = Homey.ManagerSettings.get('SmartLock');

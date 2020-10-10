@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const Verisure = require('../../lib/Api.js');
+const api = require('../../lib/Api.js');
 
 class SmartLock extends Homey.Device {
 
@@ -20,14 +20,14 @@ class SmartLock extends Homey.Device {
          // register a capability listener
         this.registerCapabilityListener('locked', this.onCapabilityOnoff.bind(this));
 
-        this._pollSmartLockInterval = setInterval(this.pollSmartLockStatus.bind(this), POLL_INTERVAL);
+        this.interval = setInterval(this.pollSmartLockStatus.bind(this), POLL_INTERVAL);
         
 
     }
     onLockChange(value) {
         
         if(value) {
-            this.setCapabilityValue('locked', value);
+            this.setCapabilityValue('locked', value).catch(this.logger);
             this.log('onLockChange SmartLock: ' + this.getName() + ' - '  + value);
         } 
         
@@ -41,6 +41,7 @@ class SmartLock extends Homey.Device {
     // this method is called when the Device is deleted
     onDeleted() {
         this.log('device deleted');
+		clearInterval(this.interval);
     }
 
     // this method is called when the Device has requested a state change (turned on or off)
@@ -50,7 +51,6 @@ class SmartLock extends Homey.Device {
         console.log("trigger smartlock: " + value);
 
         if(Homey.ManagerSettings.get('keycode')) {
-            let api = new Verisure();
             var d = this.getData();
             api.setLockState(d["deviceLabel"], value);
         }
@@ -66,7 +66,6 @@ class SmartLock extends Homey.Device {
            	this.log('[#63] Polling SmartLock...');	
             var d = this.getName();
             
-            let api = new Verisure();
             api.getSmartLock();
 
             
@@ -93,10 +92,7 @@ class SmartLock extends Homey.Device {
                         
                     }
                 }); 
-            }
-           
-			return Promise.resolve();
-			
+            }			
 		}
 	}
 	
